@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  auth:
+    build: .
+    networks:
+      - mylos
+
+networks:
+  mylos:
+    external: true

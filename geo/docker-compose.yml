@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  geo:
+    build: .
+    depends_on:
+      - redis
+    networks:
+      - mylos
+  redis:
+    image: redis
+    networks:
+      - mylos
+networks:
+  mylos:
+    external: true

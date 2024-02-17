@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  hugo:
+    image: klakegg/hugo:0.101.0-ext-alpine
+    container_name: hugo
+    command: server
+    entrypoint: hugo
+    volumes:
+      - "./hugo:/src"
+    ports:
+      - "1313:1313"
+    networks:
+      - mylos
+  rabbit:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - mylos
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
+    networks:
+      - mylos
+networks:
+  mylos:
+    external: true

@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  user:
+    build: .
+    depends_on:
+      - db
+    networks:
+      - mylos
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: userpostgres
+      POSTGRES_DB: userserv
+    networks:
+      - mylos
+networks:
+  mylos:
+    external: true
