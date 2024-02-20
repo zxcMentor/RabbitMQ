@@ -36,7 +36,7 @@ func (l *Limit) LimitMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		if !limiter.Allow() {
-			log.Println("месс сенд ту ребит")
+			log.Println("месс сенд ту брокер")
 			err = l.queM.Publish("limitreq", jsData)
 			if err != nil {
 				log.Fatal(err)

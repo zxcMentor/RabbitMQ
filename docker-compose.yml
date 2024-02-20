@@ -12,6 +12,47 @@ services:
       - "1313:1313"
     networks:
       - mylos
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    expose:
+      - "2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: 0
+      ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT: 3
+      ZOOKEEPER_MAX_CLIENT_CNXNS: 60
+      ZOOKEEPER_STANDALONE_ENABLED: 'true'
+      ZOOKEEPER_SSL_CLIENT_ENABLE: 'false'
+      ZOOKEEPER_SSL_QUORUM_ENABLE: 'false'
+      ZOOKEEPER_SSL_KEYSTORE_LOCATION: ''
+      ZOOKEEPER_SSL_KEYSTORE_PASSWORD: ''
+      ZOOKEEPER_SSL_TRUSTSTORE_LOCATION: ''
+      ZOOKEEPER_SSL_TRUSTSTORE_PASSWORD: ''
+    networks:
+      - mylos
+
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    expose:
+      - "9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR:  1
+    depends_on:
+      - zookeeper
+    networks:
+      - mylos
+
   rabbit:
     image: rabbitmq
     ports:

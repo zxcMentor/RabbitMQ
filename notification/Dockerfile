@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine as builder
+FROM golang:1.19
 
 WORKDIR /app
 
@@ -8,12 +8,10 @@ RUN go mod tidy
 
 RUN go build -o main ./cmd
 
-FROM alpine
-
-COPY --from=builder /app/main /main
-
 EXPOSE 5672
+
+EXPOSE 9092
 
 EXPOSE 15672
 
-CMD ["/main"]
+CMD ["./main"]
